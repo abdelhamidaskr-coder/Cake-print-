@@ -139,3 +139,89 @@
       line-height: 1.6;
     }
 
+    .btn-whatsapp {
+      display: block;
+      width: 100%;
+      background: #25d366;
+      color: white;
+      text-align: center;
+      padding: 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-top: 16px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>🎂 حاسبة أسعار الكيك والمقاسات</h2>
+  <div class="notice">⚠️ الأسعار مبدئية وتختلف حسب الشكل والتصميم المطلوب</div>
+
+  <div class="form-group">
+    <label for="sizeSelect">اختر المقاس المناسب:</label>
+    <select id="sizeSelect" onchange="calculate()">
+      <option value="lunch">لانش بوكس (~8 سم تقريباً)</option>
+      <option value="6inch">6 إنش (~15 سم تقريباً)</option>
+      <option value="8inch">8 إنش (~20 سم تقريباً)</option>
+      <option value="10inch">10 إنش (~25 سم تقريباً)</option>
+      <option value="20x20">20 × 20 سم تقريباً</option>
+      <option value="30x40">30 × 40 سم تقريباً</option>
+      <option value="40x60">40 × 60 سم تقريباً</option>
+    </select>
+  </div>
+
+  <div class="toggle-group">
+    <span>إضافة طباعة صورة 📸</span>
+    <label class="switch">
+      <input type="checkbox" id="photoToggle" onchange="calculate()">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="result-card">
+    <div class="details" id="servings">تكفي: 1 - 2 فرد</div>
+    <div class="price" id="totalPrice">40 ر.س</div>
+    <div class="details" id="sizeCm">الأبعاد التقريبية: ~8 سم</div>
+  </div>
+
+  <a id="waLink" href="#" target="_blank" class="btn-whatsapp">اطلب الحين عبر الواتساب 💬</a>
+</div>
+
+<script>
+  const data = {
+    'lunch': { base: 40, photo: 70, cm: '~8 سم', servings: '1 - 2 فرد', name: 'لانش بوكس' },
+    '6inch': { base: 75, photo: 135, cm: '~15 سم', servings: '4 - 6 أفراد', name: '6 إنش' },
+    '8inch': { base: 90, photo: 150, cm: '~20 سم', servings: '8 - 10 أفراد', name: '8 إنش' },
+    '10inch': { base: 127, photo: 185, cm: '~25 سم', servings: '12 - 16 فرد', name: '10 إنش' },
+    '20x20': { base: 127, photo: 185, cm: '~20 × 20 سم', servings: '12 - 16 فرد', name: '20 × 20 سم' },
+    '30x40': { base: 230, photo: 300, cm: '~30 × 40 سم', servings: '25 - 30 فرد', name: '30 × 40 سم' },
+    '40x60': { base: 350, photo: 415, cm: '~40 × 60 سم', servings: '50 - 60 فرد', name: '40 × 60 سم' }
+  };
+
+  const myPhoneNumber = "966138631010";
+
+  function calculate() {
+    const sizeKey = document.getElementById('sizeSelect').value;
+    const hasPhoto = document.getElementById('photoToggle').checked;
+    const item = data[sizeKey];
+
+    const finalPrice = hasPhoto ? item.photo : item.base;
+    const photoText = hasPhoto ? "مع طباعة صورة" : "بدون صورة";
+
+    document.getElementById('totalPrice').innerText = `${finalPrice} ر.س`;
+    document.getElementById('servings').innerText = `مناسب لـ: ${item.servings}`;
+    document.getElementById('sizeCm').innerText = `الأبعاد التقريبية: ${item.cm}`;
+
+    const msg = `مرحباً، حابب أطلب كيك مقاس ${item.name} (${photoText}) - السعر: ${finalPrice} ر.س`;
+    document.getElementById('waLink').href = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(msg)}`;
+  }
+
+  calculate();
+</script>
+
+</body>
+</html>
