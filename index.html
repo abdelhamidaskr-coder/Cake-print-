@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حاسبة أسعار الكيك والمقاسات</title>
+  <style>
+    :root {
+      --primary: #e85d04;
+      --bg: #fff8f0;
+      --card-bg: #ffffff;
+      --text: #2b2d42;
+      --border: #f1dca7;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px 12px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
+      background: var(--card-bg);
+      padding: 24px 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      text-align: center;
+      color: #9d0208;
+      margin-top: 0;
+      font-size: 1.4rem;
+    }
+
+    .notice {
+      background: #fff3bf;
+      color: #856404;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+      border: 1px solid #ffe066;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      outline: none;
+      background: #fff;
+    }
+
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8f9fa;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid #eee;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    .result-card {
+      background: #fdf0ed;
+      border: 2px dashed var(--primary);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .price {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    .details {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .btn-whatsapp {
+      display: block;
+      width: 100%;
+      background: #25d366;
+      color: white;
+      text-align: center;
+      padding: 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-top: 16px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+<!-- index.html -->
+<div class="container">
+  <h2>🎂 حاسبة أسعار الكيك والمقاسات</h2>
+  <div class="notice">⚠️ الأسعار مبدئية وتختلف حسب الشكل والتصميم المطلوب</div>
+
+  <div class="form-group">
+    <label for="sizeSelect">اختر المقاس المناسب:</label>
+    <select id="sizeSelect" onchange="calculate()">
+      <option value="lunch">لانش بوكس (~8 سم تقريباً)</option>
+      <option value="6inch">6 إنش (~15 سم تقريباً)</option>
+      <option value="8inch">8 إنش (~20 سم تقريباً)</option>
+      <option value="10inch">10 إنش (~25 سم تقريباً)</option>
+      <option value="20x20">20 × 20 سم تقريباً</option>
+      <option value="30x40">30 × 40 سم تقريباً</option>
+      <option value="40x60">40 × 60 سم تقريباً</option>
+    </select>
+  </div>
+
+  <div class="toggle-group">
+    <span>إضافة طباعة صورة 📸</span>
+    <label class="switch">
+      <input type="checkbox" id="photoToggle" onchange="calculate()">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="result-card">
+    <div class="details" id="servings">تكفي: 1 - 2 فرد</div>
+    <div class="price" id="totalPrice">40 ر.س</div>
+    <div class="details" id="sizeCm">الأبعاد التقريبية: ~8 سم</div>
+  </div>
+
+  <a id="waLink" href="#" target="_blank" class="btn-whatsapp">اطلب الحين عبر الواتساب 💬</a>
+</div>
+
+<script>
+  const data = {
+    'lunch': { base: 40, photo: 70, cm: '~8 سم', servings: '1 - 2 فرد', name: 'لانش بوكس' },
+    '6inch': { base: 75, photo: 135, cm: '~15 سم', servings: '4 - 6 أفراد', name: '6 إنش' },
+    '8inch': { base: 90, photo: 150, cm: '~20 سم', servings: '8 - 10 أفراد', name: '8 إنش' },
+    '10inch': { base: 127, photo: 185, cm: '~25 سم', servings: '12 - 16 فرد', name: '10 إنش' },
+    '20x20': { base: 127, photo: 185, cm: '~20 × 20 سم', servings: '12 - 16 فرد', name: '20 × 20 سم' },
+    '30x40': { base: 230, photo: 300, cm: '~30 × 40 سم', servings: '25 - 30 فرد', name: '30 × 40 سم' },
+    '40x60': { base: 350, photo: 415, cm: '~40 × 60 سم', servings: '50 - 60 فرد', name: '40 × 60 سم' }
+  };
+
+  // اكتب رقم الواتساب الخاص بك هنا بالصيغة الدولية بدون (+) مثلاً: 966500000000
+  const myPhoneNumber = "966500000000";
+
+  function calculate() {
+    const sizeKey = document.getElementById('sizeSelect').value;
+    const hasPhoto = document.getElementById('photoToggle').checked;
+    const item = data[sizeKey];
+
+    const finalPrice = hasPhoto ? item.photo : item.base;
+    const photoText = hasPhoto ? "مع طباعة صورة" : "بدون صورة";
+
+    document.getElementById('totalPrice').innerText = `${finalPrice} ر.س`;
+    document.getElementById('servings').innerText = `مناسب لـ: ${item.servings}`;
+    document.getElementById('sizeCm').innerText = `الأبعاد التقريبية: ${item.cm}`;
+
+    const msg = `مرحباً، حابب أطلب كيك مقاس ${item.name} (${photoText}) - السعر: ${finalPrice} ر.س`;
+    document.getElementById('waLink').href = `https://wa.me/${myPhoneNumber}?text=${encodeURIComponent(msg)}`;
+  }
+
+  calculate();
+</script>
+
+</body>
+</html>
