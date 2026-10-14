@@ -97,11 +97,45 @@
       padding: 14px 16px;
       border-radius: 12px;
       border: 1px solid #ffd8a8;
-      transition: transform 0.2s;
+      margin-bottom: 18px;
     }
 
-    .toggle-group:active {
-      transform: scale(0.98);
+    /* زر رفع الصورة */
+    .upload-btn-box {
+      background: #f0fdf4;
+      border: 2px dashed #22c55e;
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-bottom: 18px;
+    }
+
+    .upload-btn-box:hover {
+      background: #dcfce7;
+    }
+
+    .upload-btn-box input {
+      display: none;
+    }
+
+    .upload-label {
+      font-weight: bold;
+      color: #15803d;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+
+    #imageName {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 5px;
+      display: block;
     }
 
     .switch {
@@ -144,11 +178,6 @@
       padding: 18px;
       margin-top: 20px;
       text-align: center;
-      transition: transform 0.3s ease;
-    }
-
-    .result-card:hover {
-      transform: translateY(-2px);
     }
 
     .price {
@@ -217,6 +246,15 @@
     </label>
   </div>
 
+  <!-- زر إرفاق صورة التصميم المطلوب -->
+  <div class="upload-btn-box" onclick="document.getElementById('cakeImage').click()">
+    <label class="upload-label">
+      <span>📎 اضغط هنا لإرفاق صورة التصميم المطلوب</span>
+    </label>
+    <input type="file" id="cakeImage" accept="image/*" onchange="handleImageSelect(event)">
+    <span id="imageName">لم يتم اختيار صورة بعد</span>
+  </div>
+
   <div class="result-card">
     <div class="details" id="servings">👥 يكفي لـ: 1 - 2 فرد</div>
     <div class="price" id="totalPrice">40 ر.س</div>
@@ -241,6 +279,19 @@
   };
 
   const myPhoneNumber = "966138631010";
+  let hasAttachedImage = false;
+
+  function handleImageSelect(event) {
+    const file = event.target.files[0];
+    if (file) {
+      document.getElementById('imageName').innerText = `✅ تم اختيار الصورة: ${file.name}`;
+      hasAttachedImage = true;
+    } else {
+      document.getElementById('imageName').innerText = "لم يتم اختيار صورة بعد";
+      hasAttachedImage = false;
+    }
+    calculate();
+  }
 
   function calculate() {
     const sizeKey = document.getElementById('sizeSelect').value;
@@ -248,13 +299,14 @@
     const item = data[sizeKey];
 
     const finalPrice = hasPhoto ? item.photo : item.base;
-    const photoText = hasPhoto ? "مع طباعة صورة 📸" : "بدون صورة";
+    const photoText = hasPhoto ? "مع طباعة صورة على الكيك 📸" : "بدون طباعة صورة";
+    const imageNote = hasAttachedImage ? "\n(مرفق صورة التصميم المطلوب 📎)" : "";
 
     document.getElementById('totalPrice').innerText = `${finalPrice} ر.س`;
     document.getElementById('servings').innerText = `👥 يكفي لـ: ${item.servings}`;
     document.getElementById('sizeCm').innerText = `📏 الأبعاد التقريبية: ${item.cm}`;
 
-    const msg = `مرحباً، حابب أطلب كيك مقاس ${item.name} (${photoText}) - السعر: ${finalPrice} ر.س 🎂`;
+    const msg = `مرحباً، حابب أطلب كيك مقاس ${item.name} (${photoText}) - السعر: ${finalPrice} ر.س 🎂${imageNote}\nملاحظة: سيرسل العميل صورة التصميم في المحادثة الآن.`;
     document.getElementById('waLink').href = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(msg)}`;
   }
 
