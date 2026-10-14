@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>حاسبة أسعار الكيك والمقاسات</title>
+  <title>حاسبة أسعار الكيك والمقاسات - المخبز</title>
   <style>
     :root {
       --primary: #e85d04;
@@ -24,7 +24,7 @@
     }
 
     .container {
-      max-width: 480px;
+      max-width: 520px;
       width: 100%;
       background: var(--card-bg);
       padding: 24px 20px;
@@ -46,7 +46,7 @@
       color: #856404;
       padding: 10px 14px;
       border-radius: 10px;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: bold;
       text-align: center;
       margin-bottom: 20px;
@@ -54,68 +54,49 @@
     }
 
     .form-group {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     label {
       display: block;
       font-weight: bold;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       font-size: 0.95rem;
     }
 
-    select {
+    select, input[type="number"] {
       width: 100%;
-      padding: 12px;
-      border-radius: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
       border: 1px solid #ccc;
       font-size: 1rem;
       outline: none;
       background: #fff;
+      box-sizing: border-box;
     }
 
-    .toggle-group {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .extras-section {
       background: #f8f9fa;
-      padding: 12px 16px;
+      padding: 12px;
       border-radius: 12px;
       border: 1px solid #eee;
+      margin-top: 15px;
+      max-height: 220px;
+      overflow-y: auto;
     }
 
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 50px;
-      height: 26px;
+    .extra-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
     }
 
-    .switch input { opacity: 0; width: 0; height: 0; }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 34px;
+    .extra-item input[type="checkbox"] {
+      transform: scale(1.2);
+      margin-left: 8px;
     }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-
-    input:checked + .slider { background-color: var(--primary); }
-    input:checked + .slider:before { transform: translateX(24px); }
 
     .result-card {
       background: #fdf0ed;
@@ -130,13 +111,13 @@
       font-size: 1.8rem;
       font-weight: bold;
       color: var(--primary);
-      margin: 10px 0;
+      margin: 8px 0;
     }
 
     .details {
       font-size: 0.9rem;
       color: #555;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
     .btn-whatsapp {
@@ -158,65 +139,87 @@
 <body>
 
 <div class="container">
-  <h2>🎂 حاسبة أسعار الكيك والمقاسات</h2>
+  <h2>🎂 حاسبة أسعار الكيك والإضافات</h2>
   <div class="notice">⚠️ الأسعار مبدئية وتختلف حسب الشكل والتصميم المطلوب</div>
 
   <div class="form-group">
-    <label for="sizeSelect">اختر المقاس المناسب:</label>
+    <label for="sizeSelect">اختر مقاس الكيك الأساسي:</label>
     <select id="sizeSelect" onchange="calculate()">
-      <option value="lunch">لانش بوكس (~8 سم تقريباً)</option>
-      <option value="6inch">6 إنش (~15 سم تقريباً)</option>
-      <option value="8inch">8 إنش (~20 سم تقريباً)</option>
-      <option value="10inch">10 إنش (~25 سم تقريباً)</option>
-      <option value="20x20">20 × 20 سم تقريباً</option>
-      <option value="30x40">30 × 40 سم تقريباً</option>
-      <option value="40x60">40 × 60 سم تقريباً</option>
+      <option value="15cm">مقاس 15 سم (دائري) - 60 ر.س</option>
+      <option value="20cm">مقاس 20 سم (دائري) - 80 ر.س</option>
+      <option value="25cm">مقاس 25 سم (دائري) - 110 ر.س</option>
+      <option value="30x40">مقاس 30 × 40 سم (مستطيل) - 230 ر.س</option>
+      <option value="40x60">مقاس 40 × 60 سم (مستطيل) - 345 ر.س</option>
     </select>
   </div>
 
-  <div class="toggle-group">
-    <span>إضافة طباعة صورة 📸</span>
-    <label class="switch">
-      <input type="checkbox" id="photoToggle" onchange="calculate()">
-      <span class="slider"></span>
-    </label>
+  <label>الإضافات والإكسسوارات الاختيارية:</label>
+  <div class="extras-section" id="extrasList">
+    <!-- سيتم تعبئة الإضافات بالبرمجة أو يدوياً -->
+    <div class="extra-item"><label><input type="checkbox" value="60" data-name="صورة"> صورة (60 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="20" data-name="غرسة"> غرسة (20 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="5" data-name="غرسة رقم صغير"> غرسة رقم صغير (5 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="10" data-name="غرسة رقم كبيرة"> غرسة رقم كبيرة (10 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="10" data-name="قبعة تخرج"> قبعة تخرج (10 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="40" data-name="دمية صغيرة"> دمية صغيرة (40 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="100" data-name="دمية كبيرة"> دمية كبيرة (100 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="30" data-name="ورق ذهب"> ورق ذهب (30 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="60" data-name="ورد طبيعي"> ورد طبيعي (60 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="25" data-name="ورد صغير"> ورد صغير (25 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="3" data-name="ورد صناعي صغير"> ورد صناعي صغير (3 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="6" data-name="ورد صناعي كبير"> ورد صناعي كبير (6 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="50" data-name="فواكه داخل الكيكة"> فواكه داخل الكيكة (50 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="30" data-name="فواكه تزيين"> فواكه تزيين علبة (30 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="75" data-name="حشوات / فستق ومكسرات"> حشوات أو مكسرات كيلو (75 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="80" data-name="عجينة سكر"> عجينة سكر (80 ر.س)</label></div>
+    <div class="extra-item"><label><input type="checkbox" value="25" data-name="قاعدة سميكة"> قاعدة سميكة (25 ر.س)</label></div>
   </div>
 
   <div class="result-card">
-    <div class="details" id="servings">تكفي: 1 - 2 فرد</div>
-    <div class="price" id="totalPrice">40 ر.س</div>
-    <div class="details" id="sizeCm">الأبعاد التقريبية: ~8 سم</div>
+    <div class="price" id="totalPrice">60 ر.س</div>
+    <div class="details" id="selectedSummary">الكيك الأساسي فقط</div>
   </div>
 
   <a id="waLink" href="#" target="_blank" class="btn-whatsapp">اطلب الحين عبر الواتساب 💬</a>
 </div>
 
 <script>
-  const data = {
-    'lunch': { base: 40, photo: 70, cm: '~8 سم', servings: '1 - 2 فرد', name: 'لانش بوكس' },
-    '6inch': { base: 75, photo: 135, cm: '~15 سم', servings: '4 - 6 أفراد', name: '6 إنش' },
-    '8inch': { base: 90, photo: 150, cm: '~20 سم', servings: '8 - 10 أفراد', name: '8 إنش' },
-    '10inch': { base: 127, photo: 185, cm: '~25 سم', servings: '12 - 16 فرد', name: '10 إنش' },
-    '20x20': { base: 127, photo: 185, cm: '~20 × 20 سم', servings: '12 - 16 فرد', name: '20 × 20 سم' },
-    '30x40': { base: 230, photo: 300, cm: '~30 × 40 سم', servings: '25 - 30 فرد', name: '30 × 40 سم' },
-    '40x60': { base: 350, photo: 415, cm: '~40 × 60 سم', servings: '50 - 60 فرد', name: '40 × 60 سم' }
+  const cakeData = {
+    '15cm': { name: 'مقاس 15 سم', price: 60 },
+    '20cm': { name: 'مقاس 20 سم', price: 80 },
+    '25cm': { name: 'مقاس 25 سم', price: 110 },
+    '30x40': { name: 'مقاس 30 × 40 سم', price: 230 },
+    '40x60': { name: 'مقاس 40 × 60 سم', price: 345 }
   };
 
   const myPhoneNumber = "966138631010";
 
+  // ربط حدث التغيير لكل مربعات الإضافات
+  document.querySelectorAll('#extrasList input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', calculate);
+  });
+
   function calculate() {
     const sizeKey = document.getElementById('sizeSelect').value;
-    const hasPhoto = document.getElementById('photoToggle').checked;
-    const item = data[sizeKey];
+    const selectedCake = cakeData[sizeKey];
+    
+    let total = selectedCake.price;
+    let extrasText = [];
 
-    const finalPrice = hasPhoto ? item.photo : item.base;
-    const photoText = hasPhoto ? "مع طباعة صورة" : "بدون صورة";
+    document.querySelectorAll('#extrasList input[type="checkbox"]:checked').forEach(cb => {
+      total += parseInt(cb.value);
+      extrasText.push(cb.getAttribute('data-name'));
+    });
 
-    document.getElementById('totalPrice').innerText = `${finalPrice} ر.س`;
-    document.getElementById('servings').innerText = `مناسب لـ: ${item.servings}`;
-    document.getElementById('sizeCm').innerText = `الأبعاد التقريبية: ${item.cm}`;
+    document.getElementById('totalPrice').innerText = `${total} ر.س`;
+    
+    let summary = `المقاس: ${selectedCake.name}`;
+    if (extrasText.length > 0) {
+      summary += ` + الإضافات: ${extrasText.join(', ')}`;
+    }
+    document.getElementById('selectedSummary').innerText = summary;
 
-    const msg = `مرحباً، حابب أطلب كيك مقاس ${item.name} (${photoText}) - السعر: ${finalPrice} ر.س`;
+    const msg = `مرحباً، حابب أطلب كيكة:\n- ${summary}\n- السعر الإجمالي الإجمالي: ${total} ر.س`;
     document.getElementById('waLink').href = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(msg)}`;
   }
 
