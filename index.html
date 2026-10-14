@@ -94,48 +94,43 @@
       align-items: center;
       justify-content: space-between;
       background: #fff9f5;
-      padding: 14px 16px;
+      padding: 12px 16px;
       border-radius: 12px;
       border: 1px solid #ffd8a8;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
     }
 
-    /* زر رفع الصورة */
-    .upload-btn-box {
-      background: #f0fdf4;
-      border: 2px dashed #22c55e;
+    .extras-box {
+      background: #fafafa;
+      border: 1px solid #eee;
       padding: 14px;
       border-radius: 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: background 0.3s;
       margin-bottom: 18px;
     }
 
-    .upload-btn-box:hover {
-      background: #dcfce7;
-    }
-
-    .upload-btn-box input {
-      display: none;
-    }
-
-    .upload-label {
-      font-weight: bold;
-      color: #15803d;
-      cursor: pointer;
+    .extra-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      justify-content: space-between;
+      margin-bottom: 10px;
       font-size: 0.95rem;
     }
 
-    #imageName {
-      font-size: 0.85rem;
-      color: #6b7280;
-      margin-top: 5px;
-      display: block;
+    .extra-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .extra-item label {
+      margin-bottom: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .extra-item input[type="checkbox"] {
+      transform: scale(1.2);
+      cursor: pointer;
     }
 
     .switch {
@@ -209,109 +204,4 @@
       font-size: 1.05rem;
       margin-top: 20px;
       box-sizing: border-box;
-      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    .btn-whatsapp:hover {
-      background: #20ba5a;
-      transform: translateY(-2px);
-    }
-  </style>
-</head>
-<body>
-
-<div class="container">
-  <h2>🎂 حاسبة أسعار الكيك والمقاسات</h2>
-  <div class="notice">⚠️ الأسعار مبدئية وتختلف حسب الشكل والتصميم المطلوب</div>
-
-  <div class="form-group">
-    <label for="sizeSelect">🎯 اختر المقاس المناسب:</label>
-    <select id="sizeSelect" onchange="calculate()">
-      <option value="lunch">📦 لانش بوكس (~8 سم تقريباً)</option>
-      <option value="6inch">🍰 مقاس 6 إنش (~15 سم)</option>
-      <option value="8inch">🍰 مقاس 8 إنش (~20 سم)</option>
-      <option value="10inch">🍰 مقاس 10 إنش (~25 سم)</option>
-      <option value="20x20">📐 مقاس 20 × 20 سم</option>
-      <option value="30x40">📐 مقاس 30 × 40 سم</option>
-      <option value="40x60">📐 مقاس 40 × 60 سم</option>
-    </select>
-  </div>
-
-  <div class="toggle-group">
-    <span>📸 إضافة طباعة صورة على الكيك</span>
-    <label class="switch">
-      <input type="checkbox" id="photoToggle" onchange="calculate()">
-      <span class="slider"></span>
-    </label>
-  </div>
-
-  <!-- زر إرفاق صورة التصميم المطلوب -->
-  <div class="upload-btn-box" onclick="document.getElementById('cakeImage').click()">
-    <label class="upload-label">
-      <span>📎 اضغط هنا لإرفاق صورة التصميم المطلوب</span>
-    </label>
-    <input type="file" id="cakeImage" accept="image/*" onchange="handleImageSelect(event)">
-    <span id="imageName">لم يتم اختيار صورة بعد</span>
-  </div>
-
-  <div class="result-card">
-    <div class="details" id="servings">👥 يكفي لـ: 1 - 2 فرد</div>
-    <div class="price" id="totalPrice">40 ر.س</div>
-    <div class="details" id="sizeCm">📏 الأبعاد التقريبية: ~8 سم</div>
-  </div>
-
-  <a id="waLink" href="#" target="_blank" class="btn-whatsapp">
-    <span>اطلب الحين عبر الواتساب</span>
-    <span style="font-size: 1.2rem;">💬</span>
-  </a>
-</div>
-
-<script>
-  const data = {
-    'lunch': { base: 40, photo: 70, cm: '~8 سم', servings: '1 - 2 فرد', name: 'لانش بوكس' },
-    '6inch': { base: 75, photo: 135, cm: '~15 سم', servings: '4 - 6 أفراد', name: '6 إنش' },
-    '8inch': { base: 90, photo: 150, cm: '~20 سم', servings: '8 - 10 أفراد', name: '8 إنش' },
-    '10inch': { base: 127, photo: 185, cm: '~25 سم', servings: '12 - 16 فرد', name: '10 إنش' },
-    '20x20': { base: 127, photo: 185, cm: '~20 × 20 سم', servings: '12 - 16 فرد', name: '20 × 20 سم' },
-    '30x40': { base: 230, photo: 300, cm: '~30 × 40 سم', servings: '25 - 30 فرد', name: '30 × 40 سم' },
-    '40x60': { base: 350, photo: 415, cm: '~40 × 60 سم', servings: '50 - 60 فرد', name: '40 × 60 سم' }
-  };
-
-  const myPhoneNumber = "966138631010";
-  let hasAttachedImage = false;
-
-  function handleImageSelect(event) {
-    const file = event.target.files[0];
-    if (file) {
-      document.getElementById('imageName').innerText = `✅ تم اختيار الصورة: ${file.name}`;
-      hasAttachedImage = true;
-    } else {
-      document.getElementById('imageName').innerText = "لم يتم اختيار صورة بعد";
-      hasAttachedImage = false;
-    }
-    calculate();
-  }
-
-  function calculate() {
-    const sizeKey = document.getElementById('sizeSelect').value;
-    const hasPhoto = document.getElementById('photoToggle').checked;
-    const item = data[sizeKey];
-
-    const finalPrice = hasPhoto ? item.photo : item.base;
-    const photoText = hasPhoto ? "مع طباعة صورة على الكيك 📸" : "بدون طباعة صورة";
-    const imageNote = hasAttachedImage ? "\n(مرفق صورة التصميم المطلوب 📎)" : "";
-
-    document.getElementById('totalPrice').innerText = `${finalPrice} ر.س`;
-    document.getElementById('servings').innerText = `👥 يكفي لـ: ${item.servings}`;
-    document.getElementById('sizeCm').innerText = `📏 الأبعاد التقريبية: ${item.cm}`;
-
-    const msg = `مرحباً، حابب أطلب كيك مقاس ${item.name} (${photoText}) - السعر: ${finalPrice} ر.س 🎂${imageNote}\nملاحظة: سيرسل العميل صورة التصميم في المحادثة الآن.`;
-    document.getElementById('waLink').href = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(msg)}`;
-  }
-
-  calculate();
-</script>
-
-</body>
-</html>
+      box-shadow: 0 4px 12px
