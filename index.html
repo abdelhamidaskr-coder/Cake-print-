@@ -188,7 +188,8 @@
   const myPhoneNumber = "966138631010";
 
   function calculate() {
-    const sizeKey = document.getElementById('sizeSelect').value;
+    const sizeSelect = document.getElementById('sizeSelect');
+    const sizeKey = sizeSelect.value;
     const isDouble = document.getElementById('doubleToggle').checked;
     const hasPhoto = document.getElementById('photoToggle').checked;
     const item = data[sizeKey];
@@ -206,11 +207,29 @@
       extrasList.push(cb.getAttribute('data-name'));
     });
 
-    // حساب عجينة السكر
     const isSugarActive = document.getElementById('sugarToggle').checked;
-    let sugarText = "";
     if (isSugarActive) {
       let qty = parseInt(document.getElementById('sugarQty').value) || 1;
       let sugarPrice = qty * 80;
       extrasCost += sugarPrice;
-      sugar
+      extrasList.push(`عجينة سكر (${qty} كيلو)`);
+    }
+
+    const finalPrice = basePrice + extrasCost;
+
+    let heightText = isDouble ? "مرتفعة طابقين" : "ارتفاع عادي";
+    let photoText = hasPhoto ? "مع صورة" : "بدون صورة";
+    let extrasText = extrasList.length > 0 ? " + إضافات: " + extrasList.join(', ') : "";
+
+    document.getElementById('totalPrice').innerText = finalPrice + " ر.س";
+    document.getElementById('servings').innerText = "المقاس: " + item.name + " (" + heightText + ")";
+
+    const msg = "مرحباً، حابب أطلب كيك مقاس " + item.name + " [" + heightText + " - " + photoText + "]" + extrasText + " - السعر الإجمالي: " + finalPrice + " ر.س 🎂";
+    document.getElementById('waLink').href = "https://api.whatsapp.com/send?phone=" + myPhoneNumber + "&text=" + encodeURIComponent(msg);
+  }
+
+  calculate();
+</script>
+
+</body>
+</html>
