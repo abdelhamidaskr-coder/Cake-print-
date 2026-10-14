@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>حاسبة أسعار الكيك والمقاسات - المخبز</title>
+  <title>حاسبة أسعار الكيك والمقاسات 🎂</title>
   <style>
     :root {
       --primary: #e85d04;
+      --primary-hover: #dc2f02;
       --bg: #fff8f0;
       --card-bg: #ffffff;
       --text: #2b2d42;
@@ -24,28 +25,34 @@
     }
 
     .container {
-      max-width: 520px;
+      max-width: 480px;
       width: 100%;
       background: var(--card-bg);
       padding: 24px 20px;
       border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      box-shadow: 0 10px 25px rgba(232, 93, 4, 0.08);
       border: 1px solid var(--border);
       box-sizing: border-box;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h2 {
       text-align: center;
       color: #9d0208;
       margin-top: 0;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
     }
 
     .notice {
       background: #fff3bf;
       color: #856404;
       padding: 10px 14px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 0.9rem;
       font-weight: bold;
       text-align: center;
@@ -54,174 +61,200 @@
     }
 
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     label {
       display: block;
       font-weight: bold;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       font-size: 0.95rem;
+      color: #374151;
     }
 
-    select, input[type="number"] {
+    select {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
+      padding: 12px;
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
       font-size: 1rem;
       outline: none;
       background: #fff;
+      transition: all 0.3s;
       box-sizing: border-box;
     }
 
-    .extras-section {
-      background: #f8f9fa;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid #eee;
-      margin-top: 15px;
-      max-height: 220px;
-      overflow-y: auto;
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(232, 93, 4, 0.15);
     }
 
-    .extra-item {
+    .toggle-group {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
-      font-size: 0.9rem;
+      justify-content: space-between;
+      background: #fff9f5;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid #ffd8a8;
+      transition: transform 0.2s;
     }
 
-    .extra-item input[type="checkbox"] {
-      transform: scale(1.2);
-      margin-left: 8px;
+    .toggle-group:active {
+      transform: scale(0.98);
     }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(24px); }
 
     .result-card {
-      background: #fdf0ed;
+      background: linear-gradient(135deg, #fff5f0 0%, #ffe8dc 100%);
       border: 2px dashed var(--primary);
       border-radius: 16px;
-      padding: 16px;
+      padding: 18px;
       margin-top: 20px;
       text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .result-card:hover {
+      transform: translateY(-2px);
     }
 
     .price {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: bold;
       color: var(--primary);
       margin: 8px 0;
     }
 
     .details {
-      font-size: 0.9rem;
-      color: #555;
-      line-height: 1.5;
+      font-size: 0.95rem;
+      color: #4b5563;
+      line-height: 1.6;
     }
 
     .btn-whatsapp {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       width: 100%;
       background: #25d366;
       color: white;
       text-align: center;
       padding: 14px;
-      border-radius: 12px;
+      border-radius: 14px;
       text-decoration: none;
       font-weight: bold;
-      font-size: 1rem;
-      margin-top: 16px;
+      font-size: 1.05rem;
+      margin-top: 20px;
       box-sizing: border-box;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn-whatsapp:hover {
+      background: #20ba5a;
+      transform: translateY(-2px);
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>🎂 حاسبة أسعار الكيك والإضافات</h2>
+  <h2>🎂 حاسبة أسعار الكيك والمقاسات</h2>
   <div class="notice">⚠️ الأسعار مبدئية وتختلف حسب الشكل والتصميم المطلوب</div>
 
   <div class="form-group">
-    <label for="sizeSelect">اختر مقاس الكيك الأساسي:</label>
+    <label for="sizeSelect">🎯 اختر المقاس المناسب:</label>
     <select id="sizeSelect" onchange="calculate()">
-      <option value="lunch">لانش بوكس (~8 سم) - 40 ر.س</option>
-      <option value="5inch">5 إنش (~13 سم) - 50 ر.س</option>
-      <option value="15cm">مقاس 15 سم / 6 إنش (دائري) - 60 ر.س</option>
-      <option value="20cm">مقاس 20 سم / 8 إنش (دائري) - 80 ر.س</option>
-      <option value="25cm">مقاس 25 سم / 10 إنش (دائري) - 110 ر.س</option>
-      <option value="30x40">مقاس 30 × 40 سم (مستطيل) - 230 ر.س</option>
-      <option value="40x60">مقاس 40 × 60 سم (مستطيل) - 345 ر.س</option>
+      <option value="lunch">📦 لانش بوكس (~8 سم تقريباً)</option>
+      <option value="6inch">🍰 مقاس 6 إنش (~15 سم)</option>
+      <option value="8inch">🍰 مقاس 8 إنش (~20 سم)</option>
+      <option value="10inch">🍰 مقاس 10 إنش (~25 سم)</option>
+      <option value="20x20">📐 مقاس 20 × 20 سم</option>
+      <option value="30x40">📐 مقاس 30 × 40 سم</option>
+      <option value="40x60">📐 مقاس 40 × 60 سم</option>
     </select>
   </div>
 
-  <label>الإضافات والإكسسوارات الاختيارية:</label>
-  <div class="extras-section" id="extrasList">
-    <div class="extra-item"><label><input type="checkbox" value="60" data-name="صورة"> صورة (60 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="20" data-name="غرسة"> غرسة (20 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="5" data-name="غرسة رقم صغير"> غرسة رقم صغير (5 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="10" data-name="غرسة رقم كبيرة"> غرسة رقم كبيرة (10 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="10" data-name="قبعة تخرج"> قبعة تخرج (10 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="40" data-name="دمية صغيرة"> دمية صغيرة (40 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="100" data-name="دمية كبيرة"> دمية كبيرة (100 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="30" data-name="ورق ذهب"> ورق ذهب (30 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="60" data-name="ورد طبيعي"> ورد طبيعي (60 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="25" data-name="ورد صغير"> ورد صغير (25 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="3" data-name="ورد صناعي صغير"> ورد صناعي صغير (3 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="6" data-name="ورد صناعي كبير"> ورد صناعي كبير (6 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="50" data-name="فواكه داخل الكيكة"> فواكه داخل الكيكة (50 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="30" data-name="فواكه تزيين"> فواكه تزيين علبة (30 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="75" data-name="حشوات / فستق ومكسرات"> حشوات أو مكسرات كيلو (75 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="80" data-name="عجينة سكر"> عجينة سكر (80 ر.س)</label></div>
-    <div class="extra-item"><label><input type="checkbox" value="25" data-name="قاعدة سميكة"> قاعدة سميكة (25 ر.س)</label></div>
+  <div class="toggle-group">
+    <span>📸 إضافة طباعة صورة على الكيك</span>
+    <label class="switch">
+      <input type="checkbox" id="photoToggle" onchange="calculate()">
+      <span class="slider"></span>
+    </label>
   </div>
 
   <div class="result-card">
+    <div class="details" id="servings">👥 يكفي لـ: 1 - 2 فرد</div>
     <div class="price" id="totalPrice">40 ر.س</div>
-    <div class="details" id="selectedSummary">الكيك الأساسي فقط</div>
+    <div class="details" id="sizeCm">📏 الأبعاد التقريبية: ~8 سم</div>
   </div>
 
-  <a id="waLink" href="#" target="_blank" class="btn-whatsapp">اطلب الحين عبر الواتساب 💬</a>
+  <a id="waLink" href="#" target="_blank" class="btn-whatsapp">
+    <span>اطلب الحين عبر الواتساب</span>
+    <span style="font-size: 1.2rem;">💬</span>
+  </a>
 </div>
 
 <script>
-  const cakeData = {
-    'lunch': { name: 'لانش بوكس (~8 سم)', price: 40 },
-    '5inch': { name: '5 إنش (~13 سم)', price: 50 },
-    '15cm': { name: 'مقاس 15 سم (6 إنش)', price: 60 },
-    '20cm': { name: 'مقاس 20 سم (8 إنش)', price: 80 },
-    '25cm': { name: 'مقاس 25 سم (10 إنش)', price: 110 },
-    '30x40': { name: 'مقاس 30 × 40 سم', price: 230 },
-    '40x60': { name: 'مقاس 40 × 60 سم', price: 345 }
+  const data = {
+    'lunch': { base: 40, photo: 70, cm: '~8 سم', servings: '1 - 2 فرد', name: 'لانش بوكس' },
+    '6inch': { base: 75, photo: 135, cm: '~15 سم', servings: '4 - 6 أفراد', name: '6 إنش' },
+    '8inch': { base: 90, photo: 150, cm: '~20 سم', servings: '8 - 10 أفراد', name: '8 إنش' },
+    '10inch': { base: 127, photo: 185, cm: '~25 سم', servings: '12 - 16 فرد', name: '10 إنش' },
+    '20x20': { base: 127, photo: 185, cm: '~20 × 20 سم', servings: '12 - 16 فرد', name: '20 × 20 سم' },
+    '30x40': { base: 230, photo: 300, cm: '~30 × 40 سم', servings: '25 - 30 فرد', name: '30 × 40 سم' },
+    '40x60': { base: 350, photo: 415, cm: '~40 × 60 سم', servings: '50 - 60 فرد', name: '40 × 60 سم' }
   };
 
   const myPhoneNumber = "966138631010";
 
-  document.querySelectorAll('#extrasList input[type="checkbox"]').forEach(cb => {
-    cb.addEventListener('change', calculate);
-  });
-
   function calculate() {
     const sizeKey = document.getElementById('sizeSelect').value;
-    const selectedCake = cakeData[sizeKey];
-    
-    let total = selectedCake.price;
-    let extrasText = [];
+    const hasPhoto = document.getElementById('photoToggle').checked;
+    const item = data[sizeKey];
 
-    document.querySelectorAll('#extrasList input[type="checkbox"]:checked').forEach(cb => {
-      total += parseInt(cb.value);
-      extrasText.push(cb.getAttribute('data-name'));
-    });
+    const finalPrice = hasPhoto ? item.photo : item.base;
+    const photoText = hasPhoto ? "مع طباعة صورة 📸" : "بدون صورة";
 
-    document.getElementById('totalPrice').innerText = `${total} ر.س`;
-    
-    let summary = `المقاس: ${selectedCake.name}`;
-    if (extrasText.length > 0) {
-      summary += ` + الإضافات: ${extrasText.join(', ')}`;
-    }
-    document.getElementById('selectedSummary').innerText = summary;
+    document.getElementById('totalPrice').innerText = `${finalPrice} ر.س`;
+    document.getElementById('servings').innerText = `👥 يكفي لـ: ${item.servings}`;
+    document.getElementById('sizeCm').innerText = `📏 الأبعاد التقريبية: ${item.cm}`;
 
-    const msg = `مرحباً، حابب أطلب كيكة:\n- ${summary}\n- السعر الإجمالي: ${total} ر.س`;
+    const msg = `مرحباً، حابب أطلب كيك مقاس ${item.name} (${photoText}) - السعر: ${finalPrice} ر.س 🎂`;
     document.getElementById('waLink').href = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(msg)}`;
   }
 
