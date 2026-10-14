@@ -160,7 +160,8 @@
       </label>
       <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 5px;">
         <span style="font-size: 0.85rem; color: #666;">الكمية (كيلو):</span>
-        <input type="number" id="sugarQty" value="1" min="1" max="10" oninput="calculate()" style="width: 70px; padding: 4px; text-align: center;">
+        <!-- تم إضافة step="0.1" وقبول أي رقم عشري -->
+        <input type="number" id="sugarQty" value="1" min="0.1" step="0.1" oninput="calculate()" style="width: 80px; padding: 4px; text-align: center;">
       </div>
     </div>
   </div>
@@ -209,7 +210,7 @@
 
     const isSugarActive = document.getElementById('sugarToggle').checked;
     if (isSugarActive) {
-      let qty = parseInt(document.getElementById('sugarQty').value) || 1;
+      let qty = parseFloat(document.getElementById('sugarQty').value) || 0;
       let sugarPrice = qty * 80;
       extrasCost += sugarPrice;
       extrasList.push(`عجينة سكر (${qty} كيلو)`);
@@ -221,10 +222,10 @@
     let photoText = hasPhoto ? "مع صورة" : "بدون صورة";
     let extrasText = extrasList.length > 0 ? " + إضافات: " + extrasList.join(', ') : "";
 
-    document.getElementById('totalPrice').innerText = finalPrice + " ر.س";
+    document.getElementById('totalPrice').innerText = finalPrice.toFixed(1).replace('.0', '') + " ر.س";
     document.getElementById('servings').innerText = "المقاس: " + item.name + " (" + heightText + ")";
 
-    const msg = "مرحباً، حابب أطلب كيك مقاس " + item.name + " [" + heightText + " - " + photoText + "]" + extrasText + " - السعر الإجمالي: " + finalPrice + " ر.س 🎂";
+    const msg = "مرحباً، حابب أطلب كيك مقاس " + item.name + " [" + heightText + " - " + photoText + "]" + extrasText + " - السعر الإجمالي: " + finalPrice.toFixed(1).replace('.0', '') + " ر.س 🎂";
     document.getElementById('waLink').href = "https://api.whatsapp.com/send?phone=" + myPhoneNumber + "&text=" + encodeURIComponent(msg);
   }
 
