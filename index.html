@@ -145,9 +145,11 @@
   <div class="form-group">
     <label for="sizeSelect">اختر مقاس الكيك الأساسي:</label>
     <select id="sizeSelect" onchange="calculate()">
-      <option value="15cm">مقاس 15 سم (دائري) - 60 ر.س</option>
-      <option value="20cm">مقاس 20 سم (دائري) - 80 ر.س</option>
-      <option value="25cm">مقاس 25 سم (دائري) - 110 ر.س</option>
+      <option value="lunch">لانش بوكس (~8 سم) - 40 ر.س</option>
+      <option value="5inch">5 إنش (~13 سم) - 50 ر.س</option>
+      <option value="15cm">مقاس 15 سم / 6 إنش (دائري) - 60 ر.س</option>
+      <option value="20cm">مقاس 20 سم / 8 إنش (دائري) - 80 ر.س</option>
+      <option value="25cm">مقاس 25 سم / 10 إنش (دائري) - 110 ر.س</option>
       <option value="30x40">مقاس 30 × 40 سم (مستطيل) - 230 ر.س</option>
       <option value="40x60">مقاس 40 × 60 سم (مستطيل) - 345 ر.س</option>
     </select>
@@ -155,7 +157,6 @@
 
   <label>الإضافات والإكسسوارات الاختيارية:</label>
   <div class="extras-section" id="extrasList">
-    <!-- سيتم تعبئة الإضافات بالبرمجة أو يدوياً -->
     <div class="extra-item"><label><input type="checkbox" value="60" data-name="صورة"> صورة (60 ر.س)</label></div>
     <div class="extra-item"><label><input type="checkbox" value="20" data-name="غرسة"> غرسة (20 ر.س)</label></div>
     <div class="extra-item"><label><input type="checkbox" value="5" data-name="غرسة رقم صغير"> غرسة رقم صغير (5 ر.س)</label></div>
@@ -176,7 +177,7 @@
   </div>
 
   <div class="result-card">
-    <div class="price" id="totalPrice">60 ر.س</div>
+    <div class="price" id="totalPrice">40 ر.س</div>
     <div class="details" id="selectedSummary">الكيك الأساسي فقط</div>
   </div>
 
@@ -185,16 +186,17 @@
 
 <script>
   const cakeData = {
-    '15cm': { name: 'مقاس 15 سم', price: 60 },
-    '20cm': { name: 'مقاس 20 سم', price: 80 },
-    '25cm': { name: 'مقاس 25 سم', price: 110 },
+    'lunch': { name: 'لانش بوكس (~8 سم)', price: 40 },
+    '5inch': { name: '5 إنش (~13 سم)', price: 50 },
+    '15cm': { name: 'مقاس 15 سم (6 إنش)', price: 60 },
+    '20cm': { name: 'مقاس 20 سم (8 إنش)', price: 80 },
+    '25cm': { name: 'مقاس 25 سم (10 إنش)', price: 110 },
     '30x40': { name: 'مقاس 30 × 40 سم', price: 230 },
     '40x60': { name: 'مقاس 40 × 60 سم', price: 345 }
   };
 
   const myPhoneNumber = "966138631010";
 
-  // ربط حدث التغيير لكل مربعات الإضافات
   document.querySelectorAll('#extrasList input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', calculate);
   });
@@ -219,7 +221,7 @@
     }
     document.getElementById('selectedSummary').innerText = summary;
 
-    const msg = `مرحباً، حابب أطلب كيكة:\n- ${summary}\n- السعر الإجمالي الإجمالي: ${total} ر.س`;
+    const msg = `مرحباً، حابب أطلب كيكة:\n- ${summary}\n- السعر الإجمالي: ${total} ر.س`;
     document.getElementById('waLink').href = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(msg)}`;
   }
 
